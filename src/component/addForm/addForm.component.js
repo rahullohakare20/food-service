@@ -4,10 +4,8 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Grid, Typography, MenuItem, Divider, withStyles } from '@mui/material';
-import { grey, teal } from '@mui/material/colors';
+import { Grid, MenuItem, Divider} from '@mui/material';
 
 const foodType = [
     {
@@ -21,12 +19,14 @@ const foodType = [
 ];
 
 function AddForm({ open, setOpen, handleSave, ...props }) {
-    const [values, setValues] = React.useState({
+    const initialValues = {
         product: "",
         type: "",
         quantity: 0,
         unitPrice: 0,
-    });
+    };
+
+    const [values, setValues] = React.useState(initialValues);
 
     const handleClose = () => {
         setOpen(false);
@@ -42,6 +42,16 @@ function AddForm({ open, setOpen, handleSave, ...props }) {
     const checkValid = () => {
         const invalidEntries = Object.keys(values).filter(value => !values[value]);
         return invalidEntries.length > 0;
+    }
+
+    const handleCloseReset = () => {
+        setValues({...initialValues});
+        handleClose();
+    }
+
+    const handleSaveForm = (data) => {
+        handleCloseReset();
+        handleSave(data);
     }
 
     return (
@@ -115,8 +125,8 @@ function AddForm({ open, setOpen, handleSave, ...props }) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="outlined" color="secondary" onClick={() => handleSave(values)} disabled={checkValid()}>Add</Button>
+                    <Button color="secondary" onClick={handleCloseReset}>Cancel</Button>
+                    <Button variant="outlined" color="secondary" onClick={() => handleSaveForm(values)} disabled={checkValid()}>Add</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -9,7 +9,7 @@ function CardContainer() {
     const [foodData, setFoodData] = useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [deletedItem, setDeletedItem] = useState();
-    let latestId = 6;
+    const [latestId, setLatestId] = useState(6);
 
     useEffect(() => {
         const data = FoodService.getFoodData();
@@ -31,8 +31,10 @@ function CardContainer() {
 
     const handleSave = (data) => {
         const updatedData = [...foodData];
+        const newId = latestId + 1;
 
-        updatedData.push({ ...data, id: ++latestId });
+        updatedData.push({ ...data, id: newId });
+        setLatestId(newId);
         setFoodData(updatedData);
         setOpenForm(false);
     }
